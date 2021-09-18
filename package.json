@@ -1,0 +1,33 @@
+{
+  "name": "vulcanify",
+  "version": "0.0.0",
+  "description": "Unofficial Vulcan API Wrapper for Node.JS",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanuu1337/vulcanify-js.git"
+  },
+  "keywords": [
+    "vulcan",
+    "uonetplus",
+    "dzienniczekplus",
+    "dziennik",
+    "uczen",
+    "szkola",
+    "school",
+    "uonet",
+    "nodejs"
+  ],
+  "author": "yanuu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yanuu1337/vulcanify-js/issues"
+  },
+  "homepage": "https://github.com/yanuu1337/vulcanify-js#readme",
+  "dependencies": {
+    "axios": "^0.21.4"
+  }
+}
