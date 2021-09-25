@@ -1,7 +1,7 @@
 const { register } = require("./VulcanifyError");
 const ErrorMessages = {
-  API_INVALID_CODE: (received) =>
-    `Unexpected response status code from the API: ${received}`,
+  FIREBASE_API_ERROR: (received) =>
+    `Unexpected response status code from the Firebase API: ${received}`,
   INVALID_CONTENT_TYPE: (received, required) =>
     `Received an unexpected Content-Type header in the response: ${received} (expected ${required})`,
     INVALID_TOKEN_CODE: `Specify a valid and correct token code!`,
