@@ -1,3 +1,4 @@
+const FormData = require('form-data')
 exports.ROUTING_RULES_URL =
   "http://komponenty.vulcan.net.pl/UonetPlusMobile/RoutingRules.txt";
 exports.appId = '4609707972546570896:3626695765779152704'
@@ -11,9 +12,12 @@ exports.firebaseData = {
   "device": exports.device,
 }
 
+
+
 exports.firebaseHeaders = {
   "Authorization": `AidLogin ${exports.appId}`,
   "User-Agent": "Android-GCM/1.5",
-  "app": exports.app
+  "app": exports.app,
+  
 }
 exports.firebaseUrl = `https://android.clients.google.com/c2dm/register3`
