@@ -1,5 +1,5 @@
-const { default: axios } = require("axios");
 const Constants = require("./Constants");
+const centra = require('centra')
 const { Error, TypeError } = require("../errors");
 module.exports = class Utils {
   constructor() {
@@ -21,21 +21,20 @@ module.exports = class Utils {
   }
 
   static async getFirebaseToken() {
-      const {firebaseData, firebaseHeaders, firebaseUrl} = require('./Constants')
-      console.log(firebaseData, firebaseHeaders)
-      const firebaseResponse = await axios.post(firebaseUrl, firebaseData, {
-          headers: firebaseHeaders
-      })
-      if (firebaseResponse.status !== 200) {
-        throw new Error(`API_INVALID_CODE`, response.status);
+      const {firebaseUrl: url, firebaseHeaders: headers, firebaseData} = require('./Constants')
+
+      const firebaseResponse = await centra(url, 'POST').header(headers).body(firebaseData, 'form').send()
+
+      if (firebaseResponse.statusCode !== 200) {
+        throw new Error(`FIREBASE_API_ERROR`, firebaseResponse.statusCode);
       }
-      return firebaseResponse.data
+      return firebaseResponse.text()
   }
 
   static async getVulcanComponents() {
-    let response = await axios.get(`${Constants.ROUTING_RULES_URL}`);
-    if (response.status !== 200) {
-      throw new Error(`API_INVALID_CODE`, response.status);
+    let response = await centra(`${Constants.ROUTING_RULES_URL}`).send();
+    if (response.statusCode !== 200) {
+      throw new Error(`FIREBASE_API_ERROR`, response.statusCode);
     }
 
     if (response?.headers["content-type"] !== "text/plain") {
@@ -46,7 +45,7 @@ module.exports = class Utils {
     );
     }
     const components = {}
-    for(let i of response.data.split('\r\n')) {
+    for(let i of response.text().split('\r\n')) {
         let componentCode = i.split(',')[0]
         let componentUrl = i.split(',')[1]
         if(componentUrl === undefined) break;
