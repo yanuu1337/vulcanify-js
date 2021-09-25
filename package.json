@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/yanuu1337/vulcanify-js#readme",
   "dependencies": {
-    "axios": "^0.21.4"
+    "centra": "^2.5.0",
+    "form-data": "^4.0.0"
   }
 }
