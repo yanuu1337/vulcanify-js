@@ -3,7 +3,7 @@ const centra = require("centra");
 const { Error, TypeError } = require("../errors");
 const crypto = require("crypto");
 const forge = require("node-forge");
-module.exports = class Utils {
+module.exports = class Util {
   constructor() {
     throw new Error(`CLASS_INSTANTIATED_ERROR`, this.constructor.name);
   }
