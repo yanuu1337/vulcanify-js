@@ -29,6 +29,7 @@
   "homepage": "https://github.com/yanuu1337/vulcanify-js#readme",
   "dependencies": {
     "centra": "^2.5.0",
-    "form-data": "^4.0.0"
+    "form-data": "^4.0.0",
+    "node-forge": "^0.10.0"
   }
 }
