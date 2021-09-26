@@ -1,8 +1,8 @@
 const FormData = require('form-data')
 exports.ROUTING_RULES_URL =
   "http://komponenty.vulcan.net.pl/UonetPlusMobile/RoutingRules.txt";
-exports.appId = '4609707972546570896:3626695765779152704'
-exports.device = exports.appId.split(':')[0];
+exports.aid = '4609707972546570896:3626695765779152704'
+exports.device = exports.aid.split(':')[0];
 exports.app ="pl.edu.vulcan.hebe"
 exports.firebaseData = {
   "sender": "987828170337",
@@ -12,10 +12,16 @@ exports.firebaseData = {
   "device": exports.device,
 }
 
+exports.deviceModel = `Vulcanify - Vulcan API Wrapper for Node.JS`
+
+exports.APP_NAME = "DzienniczekPlus 2.0";
+exports.APP_VERSION = "1.4.2";
+exports.APP_OS = "Android";
+exports.APP_USER_AGENT = "Dart/2.10 (dart:io)";
 
 
 exports.firebaseHeaders = {
-  "Authorization": `AidLogin ${exports.appId}`,
+  "Authorization": `AidLogin ${exports.aid}`,
   "User-Agent": "Android-GCM/1.5",
   "app": exports.app,
   
