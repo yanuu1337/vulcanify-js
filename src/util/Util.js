@@ -54,7 +54,7 @@ module.exports = class Utils {
 
   /**
    * Acquires the Firebase messaging token from Firebase (recommended to save it for later use)
-   * @returns {response} Firebase Messaging token
+   * @returns {Promise<string>} Firebase Messaging token
    */
   static async getFirebaseToken() {
     const {
@@ -71,8 +71,8 @@ module.exports = class Utils {
     if (firebaseResponse.statusCode !== 200) {
       throw new Error(`FIREBASE_API_ERROR`, firebaseResponse.statusCode);
     }
-    const response = await firebaseResponse.text()
-    return response;
+    
+    return firebaseResponse.text();
   }
 
 
