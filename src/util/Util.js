@@ -2,7 +2,7 @@ const Constants = require("./Constants");
 const centra = require("centra");
 const { Error, TypeError } = require("../errors");
 const crypto = require("crypto");
-const forge = require('node-forge')
+const forge = require("node-forge");
 module.exports = class Utils {
   constructor() {
     throw new Error(`CLASS_INSTANTIATED_ERROR`, this.constructor.name);
@@ -43,12 +43,30 @@ module.exports = class Utils {
         .export({ format: "pem", type: "spki" })
         .toString();
 
-      const certificate = forge.pki.createCertificate()
-      certificate.publicKey = forge.pki.publicKeyFromPem(publicKey)
-      certificate.privateKey = forge.pki.privateKeyFromPem(privateKey)
-      certificate.serialNumber = "1";
-      certificate.validity.notBefore = new Date()
-      certificate.validity.notAfter
+      const fullCert = forge.pki.createCertificate();
+      fullCert.publicKey = forge.pki.publicKeyFromPem(publicKey);
+      fullCert.privateKey = forge.pki.privateKeyFromPem(privateKey);
+      fullCert.serialNumber = "1";
+      fullCert.validity.notBefore = new Date();
+      fullCert.validity.notAfter = this.appendYears(new Date(), 30);
+      const attributes = [
+        { shortName: "CN", value: "APP_CERTIFICATE CA Certificate" },
+      ];
+      fullCert.setSubject(attributes);
+      fullCert.setIssuer(attributes);
+      fullCert.sign(fullCert.privateKey, forge.md.sha256.create());
+      const fingerprint = crypto
+        .createHash(`sha1`)
+        .update(
+          forge.asn1
+            .toDer(forge.pki.certificateToAsn1(fullCert))
+            .getBytes()
+            .toString(),
+          "latin1"
+        ).digest().toString("hex");
+      const certificate = forge.pki.certificateToPem(fullCert).replace(`-----BEGIN CERTIFICATE-----`, "").replace(`-----END CERTIFICATE-----`, "").replace(/\r?n|\r/g, "").trim()
+      const returnablePrivateKey = privateKey.replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "").replace(/\r?n|\r/g, "").trim()
+      return {certificate, fingerprint, privateKey: returnablePrivateKey}
     });
   }
 
@@ -71,20 +89,19 @@ module.exports = class Utils {
     if (firebaseResponse.statusCode !== 200) {
       throw new Error(`FIREBASE_API_ERROR`, firebaseResponse.statusCode);
     }
-    
+
     return firebaseResponse.text();
   }
-
 
   /**
    * Fetches all vulcan routing rules from their API and returns them in one object
    * @returns {Object} An object of all vulcan component routing rules
-   * 
+   *
    * @example
    * const routingRules = await Util.getVulcanComponents()
    * const myVulcanComponent = routingRules['3S1']
    * // use it for something
-   * 
+   *
    */
 
   static async getVulcanComponents() {
@@ -114,14 +131,15 @@ module.exports = class Utils {
   get secondsSinceEpoch() {
     return Math.round(Date.now() / 1000);
   }
-  
+
   /**
-   * 
+   *
    * @param {Date} date The date to add years to
    * @param {number} numberOfYears Amount of years
    * @returns {Date} New formatted date
    */
   appendYears(date, numberOfYears) {
-    return new Date(date.setFullYear(date.getFullYear() + numberOfYears))
+    return new Date(date.setFullYear(date.getFullYear() + numberOfYears));
   }
+  
 };
