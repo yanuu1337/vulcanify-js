@@ -19,30 +19,27 @@ module.exports = class Util {
     if (!components[tokenCode]) throw new TypeError(`INVALID_TOKEN_CODE`);
   }
 
-  get payload() {
-    return {
-      AppName: Constants.app,
-    };
-  }
+  
 
   //This piece of utility is loosely inspired by the `vulcan-api-js` module
-  async generateKeyPair() {
+  static async generateKeyPair() {
     const keys = await new Promise((resolve, reject) => {
       crypto.generateKeyPair(
         "rsa",
         { modulusLength: 2048 },
         (err, publicKey, privateKey) => {
-          if (err) reject(err);
-          else resolve({ publicKey, privateKey });
+          if (err) {reject(err);}
+          else {resolve({ publicKey, privateKey })};
         }
       );
+      })
       const publicKey = keys.publicKey
         .export({ format: "pem", type: "spki" })
         .toString();
       const privateKey = keys.privateKey
         .export({ format: "pem", type: "spki" })
         .toString();
-
+    
       const fullCert = forge.pki.createCertificate();
       fullCert.publicKey = forge.pki.publicKeyFromPem(publicKey);
       fullCert.privateKey = forge.pki.privateKeyFromPem(privateKey);
@@ -67,9 +64,9 @@ module.exports = class Util {
       const certificate = forge.pki.certificateToPem(fullCert).replace(`-----BEGIN CERTIFICATE-----`, "").replace(`-----END CERTIFICATE-----`, "").replace(/\r?n|\r/g, "").trim()
       const returnablePrivateKey = privateKey.replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "").replace(/\r?n|\r/g, "").trim()
       return {certificate, fingerprint, privateKey: returnablePrivateKey}
-    });
+   
   }
-
+  
   /**
    * Acquires the Firebase messaging token from Firebase (recommended to save it for later use)
    * @returns {Promise<string>} Firebase Messaging token
